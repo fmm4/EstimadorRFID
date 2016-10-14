@@ -106,5 +106,11 @@ public class ILCMSbS implements Estimator {
     public double find_optimal_Q (double R){
     	return log_2 ( 2.39 * Math.pow(2, Qc) );
     }
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
 }

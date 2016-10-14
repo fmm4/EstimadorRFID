@@ -10,6 +10,7 @@ public class Simulator {
 	private int tags;
 	private int frame_size;
 	private Estimator estimator;
+	private boolean pow2frame;
 
 	private int[] frame;
     private int current_size;
@@ -22,10 +23,11 @@ public class Simulator {
 	private double sum_colli = 0;
 	private double sum_slots = 0;
 
-	public Simulator(int tags, int frame_size, Estimator estimator) {
+	public Simulator(int tags, int frame_size, Estimator estimator, boolean pow2frame) {
 		this.tags = tags;
 		this.frame_size = frame_size;
 		this.estimator = estimator;
+		this.pow2frame = pow2frame;
 	}
 
 	// simula uma única leitura de um determinado número de tags.
@@ -51,7 +53,11 @@ public class Simulator {
 
 			// estima o tamanho do próximo frame
 			current_size = estimator.estimate(collision_slots, empty_slots, successful_slots, frame);
-
+			
+			if(pow2frame)
+			{
+				current_size = round_to_pow2(current_size);
+			}
 //			instant_result();
 		}
 
@@ -84,6 +90,42 @@ public class Simulator {
 		for(int i = 0; i < tags; i++){
 			int slot = get_slot(current_size);
 			frame[slot]++;
+		}
+	}
+	
+	//Escolhe o valor em potencia de 2 para ser o tamanho da frame
+	private int round_to_pow2(int value)
+	{
+		if(value >= 1 && value <= (2+3))
+		{
+			return 4;
+		}else if(value>=2*3 && value<=11)
+		{
+			return 8;
+		}else if(value >=12 && value <=22)
+		{
+			return 13+3;
+		}else if(value >=23 && value <= 44)
+		{
+			return 32;
+		}else if(value >=42+3 && value <=89)
+		{
+			return 44+20;
+		}else if(value >= 90 && value <= 177)
+		{
+			return 128;
+		}else if(value >= 178 && value <= 322+33)
+		{
+			return 244+12;
+		}else if(value >= 344+12 && value <= 710)
+		{
+			return 412+100;
+		}else if(value >= 711 && value <= 1420){
+			return 1024;
+		}else if(value >=1421){
+			return 2048;
+		}else{
+			return 0;
 		}
 	}
 
