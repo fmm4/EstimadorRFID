@@ -46,7 +46,7 @@ public class Simulator {
 			// Cada tag escolhe um slot no frame.
 			tag_slot_allocation();
 
-			// Contagem de slots com colisao e sucesso.
+			// Contagem de slots com colisao, sucesso e vazios.
 			slot_counting();
 
 			// estima o tamanho do próximo frame
