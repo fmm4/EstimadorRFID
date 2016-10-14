@@ -5,9 +5,9 @@ package back;
  */
 public class ILCMSbS implements Estimator {
 
-	public int e = 0;
-	public int s = 0;
-	public int c = 0;
+	public double e = 0;
+	public double s = 0;
+	public double c = 0;
 
 	double C;
 	
@@ -25,10 +25,10 @@ public class ILCMSbS implements Estimator {
     	i = 0;
     	C = collision_slots;
     	Qn = -1;
-    	Qc = -1;
+    	Qc = frame.length;
     	
     	while (Qn == -1 && i <= Math.pow(2, Qc)){
-    		readSlot(frame);
+//    		readSlot(frame);
     		
     		i++;
     		if (i > 1 && R(i) - R(i - 1) <= 1){

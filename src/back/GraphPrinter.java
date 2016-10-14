@@ -12,6 +12,7 @@ import org.jfree.chart.labels.CategoryToolTipGenerator;
 import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.urls.CategoryURLGenerator;
 import org.jfree.chart.urls.StandardCategoryURLGenerator;
@@ -22,6 +23,8 @@ import org.jfree.data.general.DatasetUtilities;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -147,11 +150,14 @@ public class GraphPrinter {
 	         y_axis,
 	         graph,PlotOrientation.VERTICAL,
 	         true,true,false);
+		
+		lineChartObject.getPlot().setBackgroundPaint(Color.DARK_GRAY);
 
 	      int width = 1024; /* Width of the image */
 	      int height = 1080; /* Height of the image */ 
 	      File lineChart = new File( name+".jpeg" ); 
 	      try {
+	    	  
 			ChartUtilities.saveChartAsJPEG(lineChart ,lineChartObject, width ,height);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
