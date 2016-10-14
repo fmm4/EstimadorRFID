@@ -41,7 +41,7 @@ public class Screen {
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(450, 300);
+		shell.setSize(825, 606);
 		shell.setText("SWT Application");
 
 	}
