@@ -1,8 +1,10 @@
-package back;
+package front;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+
+import back.*;
 
 /**
  * Classe utilizada para rodar os experimentos
@@ -13,7 +15,7 @@ public class Experiments {
 
     public int type = 2;
 
-    public Map<Integer,graphInfo> test_tags(Estimator estimator, int init_tags, int increment, int max_tags, int frame_size, boolean frame_pow2)
+    public Map<Integer, graphInfo> test_tags(Estimator estimator, int init_tags, int increment, int max_tags, int frame_size, boolean frame_pow2)
     {
         Map<Integer,graphInfo> simulationInformation;
 
@@ -37,6 +39,7 @@ public class Experiments {
 
         Experiments experiments = new Experiments();
         LowerBound lowerBound = new LowerBound();
+        Schoute schoute = new Schoute();
 
         int n_of_tags = 30;
         int increment_step = 1;
@@ -46,7 +49,7 @@ public class Experiments {
 
         Map<Integer, graphInfo> simulationInformation = new TreeMap<Integer, graphInfo>();
         simulationInformation = experiments.test_tags(
-                lowerBound, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
+                schoute, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
 
 //        System.out.print(simulationInformation);
 

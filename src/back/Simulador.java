@@ -8,10 +8,6 @@ import back.graphInfo;
 
 import java.util.Random;
 
-interface Estimator {
-	int estimate(double collision_slots, double successful_slots);
-}
-
 public class Simulador {
 	public int tags;
 	public int frame_size;
