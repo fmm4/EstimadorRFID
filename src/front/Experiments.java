@@ -54,10 +54,12 @@ public class Experiments {
         Experiments experiments = new Experiments();
         LowerBound lowerBound = new LowerBound();
         Schoute schoute = new Schoute();
+        ILCMSbS artig = new ILCMSbS();
         GraphPrinter printer = new GraphPrinter();
 
         Vector SchouteVec = new Vector();
         Vector LBVec = new Vector();
+        Vector artiVec = new Vector();
         for(int i = 0; i<retry; i++)
         {
 	        Map<Integer, graphInfo> simulationSchoute = new TreeMap<Integer, graphInfo>();
@@ -68,17 +70,23 @@ public class Experiments {
 	        Map<Integer, graphInfo> simulationLB = new TreeMap<Integer, graphInfo>();
 	        simulationLB = experiments.test_tags(
 	                lowerBound, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
-	        
 	        LBVec.add(simulationLB);
+	        
+	        Map<Integer, graphInfo> simulationArti = new TreeMap<Integer, graphInfo>();
+	        simulationArti = experiments.test_tags(
+	                artig, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
+	        artiVec.add(simulationArti);
         }
         
         Map<Integer, graphInfo> simulationSchoute = averageValues(SchouteVec);
         Map<Integer, graphInfo> simulationLB = averageValues(LBVec);
+        Map<Integer, graphInfo> simulationArti = averageValues(artiVec);
         
         Map<Estimator, Map<Integer, graphInfo>> graphMap = new HashMap();
         
         graphMap.put(schoute, simulationSchoute);
         graphMap.put(lowerBound, simulationLB);
+        graphMap.put(artig, simulationArti);
         
         
         printer.printChart(graphMap);

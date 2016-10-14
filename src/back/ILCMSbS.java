@@ -100,7 +100,7 @@ public class ILCMSbS implements Estimator {
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return null;
+		return "ILCMSbS";
 	}
     
 }
