@@ -65,10 +65,10 @@ public class Simulador {
 		Vector a = new Vector();
 		graphInfo graph_information = new graphInfo();
 		
-		int reader_signals = 0;
-		int sum_empty = 0;
-		int sum_colli = 0;
-		int sum_slots = 0;
+		double reader_signals = 0;
+		double sum_empty = 0;
+		double sum_colli = 0;
+		double sum_slots = 0;
 		
 		
 		long startTime = System.nanoTime();	
@@ -85,24 +85,24 @@ public class Simulador {
 				int slot = get_slot(current_size);
 				frame[slot]++;
 			}
-			int collision_slots = 0;
-			int successful_slots = 0;
+			double collision_slots = 0;
+			double successful_slots = 0;
 			for(int i = 0; i < current_size; i++)
 			{
 				if(frame[i]>1)
 				{
 					sum_colli++;
-					collision_slots++;
+					collision_slots++;	
 				}else if(frame[i]==1)
 				{
 					tags--;
 					successful_slots++;
 				}else if(frame[i]==0)
-				{
+				{	
 					sum_empty++;
 				}
 			}
-			current_size = collision_slots*2+successful_slots;
+			current_size = (int) ((collision_slots)*2+successful_slots);
 			sum_slots += current_size;
 		}
 		
