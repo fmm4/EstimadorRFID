@@ -28,7 +28,7 @@ public class Experiments {
         for(int tags = init_tags; tags < max_tags; tags+=increment)
         {
             Simulator simulator = new Simulator(tags, frame_size, estimator);
-            graphInfo tempGraph = simulador.simulate();
+            graphInfo tempGraph = simulator.simulate();
             simulationInformation.put(tags, tempGraph);
         }
 
