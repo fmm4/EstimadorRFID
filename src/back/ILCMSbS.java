@@ -5,9 +5,9 @@ package back;
  */
 public class ILCMSbS implements Estimator {
 
-	public int e = 0;
-	public int s = 0;
-	public int c = 0;
+	public double e = 0;
+	public double s = 0;
+	public double c = 0;
 
 	double C;
 	
@@ -21,14 +21,17 @@ public class ILCMSbS implements Estimator {
 	double ps1;
 	double ps2;
 
-    public int estimate (double collision_slots, double empty_slots, double successful_slots, int[] frame){
+    public int estimate (double collision_slots, double empty_slots, double successful_slots, double current_size, int[] frame){
     	i = 0;
     	C = collision_slots;
     	Qn = -1;
-    	Qc = -1;
+    	Qc = current_size;
     	
     	while (Qn == -1 && i <= Math.pow(2, Qc)){
-    		readSlot(frame);
+//    		readSlot(frame);
+    		c = collision_slots;
+    		e = empty_slots;
+    		s = successful_slots;
     		
     		i++;
     		if (i > 1 && R(i) - R(i - 1) <= 1){
@@ -45,10 +48,10 @@ public class ILCMSbS implements Estimator {
     	}
     	
     	if (Qn != -1){
-    		 return (int) Qn;
+    		 return (int) Math.round(Qn);
     	} else {
     		Qn = Qc;
-    		return (int) Qn;
+    		return (int) Math.round(Qn);
     	}
     }
 
@@ -67,7 +70,7 @@ public class ILCMSbS implements Estimator {
     }
     
     public double k_line (double i){
-    	double k_line_i = c/((4.344 * i - 16.28) + (i/(- 2282 - 0.273 * i) * c)) + 0.2407 * Math.log(i + 42.56);
+    	double k_line_i = c/((4.344 * i - 16.28) + (i/(- 2.282 - 0.273 * i) * c)) + 0.2407 * Math.log(i + 42.56);
 
 		if (k_line_i < 0){
 			k_line_i = 0;
@@ -80,13 +83,17 @@ public class ILCMSbS implements Estimator {
     }
     
     public void readSlot(int[] frame){
-    	if(frame[(int) i]>1) {
-			c++;
-		} else if(frame[(int) i]==1) {
-			s++;
-		} else if(frame[(int) i]==0) {
-			e++;
-		}
+//    	System.out.print(i + " - ");
+//    	System.out.print((int) Math.ceil(i) + " - ");
+//    	System.out.println(frame.length);
+//    	if(frame[(int) Math.round(i)] > 1) {
+//			c++;
+//		} else if(frame[(int) Math.round(i)] == 1) {
+//			s++;
+//		} else if(frame[(int) Math.round(i)] == 0) {
+//			e++;
+//		}
+    	
     }
     
     public double log_2 (double a){

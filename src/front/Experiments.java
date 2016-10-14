@@ -43,7 +43,7 @@ public class Experiments {
 
     public static void main(String[] args) {
  
-    	simulate(100, 100, 1000, 2000,230+20,false);
+    	simulate(100, 10, 500, 30,100+20,false);
 //        System.out.print(simulationInformation);
 
 
@@ -71,7 +71,7 @@ public class Experiments {
 	        simulationLB = experiments.test_tags(
 	                lowerBound, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
 	        LBVec.add(simulationLB);
-	        
+
 	        Map<Integer, graphInfo> simulationArti = new TreeMap<Integer, graphInfo>();
 	        simulationArti = experiments.test_tags(
 	                artig, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
