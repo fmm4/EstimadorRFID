@@ -50,7 +50,7 @@ public class Simulator {
 			slot_counting();
 
 			// estima o tamanho do próximo frame
-			current_size = estimator.estimate(collision_slots, successful_slots);
+			current_size = estimator.estimate(collision_slots, empty_slots, successful_slots, frame);
 
 //			instant_result();
 		}
