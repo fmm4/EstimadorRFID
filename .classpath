@@ -2,8 +2,17 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="C:/UFPE/2016.2/IF769-MineracaoDaWeb/Projeto/Mineracao/SWT/swt.jar"/>
-	<classpathentry kind="lib" path="C:/UFPE/2016.2/IF740-Sistemas de Comunicação/EstimadorDFSA/SimuladorRFID/lib/charts4j-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/UFPE/2016.2/IF740-Sistemas de Comunicação/EstimadorDFSA/SimuladorRFID/lib/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="C:/UFPE/2016.2/IF740-Sistemas de Comunicação/EstimadorDFSA/SimuladorRFID/lib/swt.jar"/>
+	<classpathentry kind="lib" path="C:/UFPE/2016.2/IF740-Sistemas de Comunicação/EstimadorDFSA/SimuladorRFID/lib/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="lib" path="C:/UFPE/2016.2/IF740-Sistemas de Comunicação/EstimadorDFSA/SimuladorRFID/lib/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="C:/UFPE/2016.2/IF740-Sistemas de Comunicação/EstimadorDFSA/SimuladorRFID/lib/jfreechart-1.0.19.jar"/>
+	<classpathentry kind="lib" path="C:/UFPE/2016.2/IF740-Sistemas de Comunicação/EstimadorDFSA/SimuladorRFID/lib/jfreechart-1.0.19-experimental.jar"/>
+	<classpathentry kind="lib" path="C:/UFPE/2016.2/IF740-Sistemas de Comunicação/EstimadorDFSA/SimuladorRFID/lib/jfreechart-1.0.19-swt.jar"/>
+	<classpathentry kind="lib" path="C:/UFPE/2016.2/IF740-Sistemas de Comunicação/EstimadorDFSA/SimuladorRFID/lib/jfreesvg-2.0.jar"/>
+	<classpathentry kind="lib" path="C:/UFPE/2016.2/IF740-Sistemas de Comunicação/EstimadorDFSA/SimuladorRFID/lib/junit-4.11.jar"/>
+	<classpathentry kind="lib" path="C:/UFPE/2016.2/IF740-Sistemas de Comunicação/EstimadorDFSA/SimuladorRFID/lib/orsoncharts-1.4-eval-nofx.jar"/>
+	<classpathentry kind="lib" path="C:/UFPE/2016.2/IF740-Sistemas de Comunicação/EstimadorDFSA/SimuladorRFID/lib/orsonpdf-1.6-eval.jar"/>
+	<classpathentry kind="lib" path="C:/UFPE/2016.2/IF740-Sistemas de Comunicação/EstimadorDFSA/SimuladorRFID/lib/servlet.jar"/>
+	<classpathentry kind="lib" path="C:/UFPE/2016.2/IF740-Sistemas de Comunicação/EstimadorDFSA/SimuladorRFID/lib/swtgraphics2d.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,4 +1,6 @@
 package back;
+
+
 import java.util.Arrays;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -7,10 +9,13 @@ import java.util.Map;
 import java.util.HashMap;
 
 import back.graphInfo;
+import back.GraphPrinter;
 
 import java.util.Random;
 
 public class Simulador {
+	
+	private static GraphPrinter printer;
 	
 	public static final int
 		LOWER_BOUND = 1,
@@ -18,6 +23,8 @@ public class Simulador {
 		EARLY_FRAME = 3;
 
 	public static void main(String[] args) {
+		
+		printer = new GraphPrinter();
 		
 		int n_of_tags = 30;
 		int increment_step;
@@ -32,9 +39,11 @@ public class Simulador {
 			  System.out.print("Tags: "+k+"\n");
 			  System.out.print("AvgColli: "+v.avg_colli+" AvgSlots: "+v.avg_slots+"\n");
 			  
-			  
-			  // do stuff
 		}
+		Vector<Map<Integer, graphInfo>> a = new Vector();
+		a.add(test);
+		
+		printer.printChart(a);
 
 	}
 
