@@ -6,4 +6,6 @@ package back;
 
 public interface Estimator {
     int estimate(double collision_slots, double successful_slots);
+
+	String getName();
 }

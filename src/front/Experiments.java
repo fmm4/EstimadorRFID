@@ -1,8 +1,14 @@
 package front;
 
+import back.Estimator;
+import back.GraphPrinter;
+import back.graphInfo;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.Vector;
 
 import back.*;
 
@@ -36,25 +42,74 @@ public class Experiments {
     }
 
     public static void main(String[] args) {
+ 
+    	simulate(100, 100, 1000, 2000,230+20,false);
+//        System.out.print(simulationInformation);
 
+
+    }
+    
+    public static void simulate(int n_of_tags, int increment_step, int max_tags, int retry, int frame_size, boolean frame_pow2)
+    {
         Experiments experiments = new Experiments();
         LowerBound lowerBound = new LowerBound();
         Schoute schoute = new Schoute();
+        GraphPrinter printer = new GraphPrinter();
 
-        int n_of_tags = 30;
-        int increment_step = 10;
-        int max_tags = 10000;
-        int frame_size = 1000;
-        boolean frame_pow2 = false;
-
-        Map<Integer, graphInfo> simulationInformation = new TreeMap<Integer, graphInfo>();
-        simulationInformation = experiments.test_tags(
-                schoute, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
-
-//        System.out.print(simulationInformation);
-
-        for(Map.Entry<Integer, graphInfo> entry : simulationInformation.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+        Vector SchouteVec = new Vector();
+        Vector LBVec = new Vector();
+        for(int i = 0; i<retry; i++)
+        {
+	        Map<Integer, graphInfo> simulationSchoute = new TreeMap<Integer, graphInfo>();
+	        simulationSchoute = experiments.test_tags(
+	                schoute, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
+	        SchouteVec.add(simulationSchoute);
+	        
+	        Map<Integer, graphInfo> simulationLB = new TreeMap<Integer, graphInfo>();
+	        simulationLB = experiments.test_tags(
+	                lowerBound, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
+	        
+	        LBVec.add(simulationLB);
         }
+        
+        Map<Integer, graphInfo> simulationSchoute = averageValues(SchouteVec);
+        Map<Integer, graphInfo> simulationLB = averageValues(LBVec);
+        
+        Map<Estimator, Map<Integer, graphInfo>> graphMap = new HashMap();
+        
+        graphMap.put(schoute, simulationSchoute);
+        graphMap.put(lowerBound, simulationLB);
+        
+        
+        printer.printChart(graphMap);
+    }
+    
+    static Map<Integer,graphInfo> averageValues(Vector<Map<Integer, graphInfo> > retried_graph)
+    {
+    	Map<Integer,graphInfo> averaged = new TreeMap();
+    	
+    	long time;
+    	
+		for (Entry<Integer, graphInfo> entry : (retried_graph.elementAt(0)).entrySet())
+		{
+			averaged.put(entry.getKey(),entry.getValue());
+		}
+    	
+		for(int i = 1; i < retried_graph.size(); i++)
+    	{
+			for (Entry<Integer, graphInfo> entry : (retried_graph.elementAt(i)).entrySet())
+			{
+				averaged.put(entry.getKey(), averaged.get(entry.getKey()).add(entry.getValue()));
+			}
+    	}
+		
+		int division = retried_graph.size();
+		
+		for (Entry<Integer, graphInfo> entry : averaged.entrySet())
+		{
+				averaged.put(entry.getKey(), averaged.get(entry.getKey()).divide(division));
+		}
+    	
+		return averaged;    	
     }
 }
