@@ -41,13 +41,19 @@ public class Simulador {
 		while(tags>0)
 		{
 			reader_signals++;
+
+			// Inicializa frame com quantidade de tags em cada slot igual a 0.
 			int[] frame = new int[current_size];
 			Arrays.fill(frame,0);
+
+			// Cada tag escolhe um slot no frame.
 			for(int i = 0; i < tags; i++)
 			{
 				int slot = get_slot(current_size);
 				frame[slot]++;
 			}
+
+			// Contagem de slots com colisao e sucesso.
 			int collision_slots = 0;
 			int successful_slots = 0;
 			for(int i = 0; i < current_size; i++)
