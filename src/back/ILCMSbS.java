@@ -5,11 +5,11 @@ package back;
  */
 public class ILCMSbS implements Estimator {
 
-	public int e;
-	public int s;
-	public int c;
+	public int e = 0;
+	public int s = 0;
+	public int c = 0;
 
-	double C = 0;
+	double C;
 	
 	double i;
 	double Qn;
@@ -22,13 +22,8 @@ public class ILCMSbS implements Estimator {
 	double ps2;
 
     public int estimate (double collision_slots, double empty_slots, double successful_slots, int[] frame){
-
-    	double k_line_i;
-    	double l_line_i;
-    	double N_i;
-    	double R_i;
-
     	i = 0;
+    	C = collision_slots;
     	Qn = -1;
     	Qc = -1;
     	
@@ -36,16 +31,6 @@ public class ILCMSbS implements Estimator {
     		readSlot(frame);
     		
     		i++;
-    		k_line_i = k_line(i);
-    		l_line_i = l_line(i);
-    		
-    		if (k_line_i < 0){
-    			k_line_i = 0;
-    		}
-    		
-    		N_i = N(i);
-    		R_i = R(i);
-    		
     		if (i > 1 && R(i) - R(i - 1) <= 1){
     			L1 = Math.pow(2, Qc);
     			Qt = find_optimal_Q(R(i));
@@ -82,7 +67,12 @@ public class ILCMSbS implements Estimator {
     }
     
     public double k_line (double i){
-    	return c/((4.344 * i - 16.28) + (i/(- 2282 - 0.273 * i) * c)) + 0.2407 * Math.log(i + 42.56);
+    	double k_line_i = c/((4.344 * i - 16.28) + (i/(- 2282 - 0.273 * i) * c)) + 0.2407 * Math.log(i + 42.56);
+
+		if (k_line_i < 0){
+			k_line_i = 0;
+		}
+    	return k_line_i;
     }
     
     public double l_line (double i){
