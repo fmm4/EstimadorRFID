@@ -7,7 +7,7 @@ import java.lang.Math;
  */
 public class LowerBound implements Estimator {
 
-    public int estimate (double collision_slots, double successful_slots){
+    public int estimate (double collision_slots, double empty_slots, double successful_slots, int[] frame){
         return (int) Math.ceil((collision_slots*2+successful_slots));
     }
 }
