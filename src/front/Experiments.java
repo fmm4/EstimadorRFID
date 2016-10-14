@@ -27,7 +27,7 @@ public class Experiments {
 
         for(int tags = init_tags; tags < max_tags; tags+=increment)
         {
-            Simulador simulador = new Simulador(tags, frame_size, estimator);
+            Simulator simulator = new Simulator(tags, frame_size, estimator);
             graphInfo tempGraph = simulador.simulate();
             simulationInformation.put(tags, tempGraph);
         }
@@ -42,9 +42,9 @@ public class Experiments {
         Schoute schoute = new Schoute();
 
         int n_of_tags = 30;
-        int increment_step = 1;
-        int max_tags = 90;
-        int frame_size = 40;
+        int increment_step = 10;
+        int max_tags = 10000;
+        int frame_size = 1000;
         boolean frame_pow2 = false;
 
         Map<Integer, graphInfo> simulationInformation = new TreeMap<Integer, graphInfo>();
