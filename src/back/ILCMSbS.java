@@ -20,23 +20,24 @@ public class ILCMSbS implements Estimator {
 	double L2;
 	double ps1;
 	double ps2;
+	
+	//RETRIER//
+	int retrier = 0;
 
     public int estimate (double collision_slots, double empty_slots, double successful_slots, double current_size, int[] frame){
     	i = 0;
     	C = collision_slots;
     	Qn = -1;
     	Qc = current_size;
-    	
-    	
-    	
+
     	while (Qn == -1 && i <= Math.pow(2, Qc)){
 //    		readSlot(frame);
     		c = collision_slots;
     		e = empty_slots;
     		s = successful_slots;
-    		//LOOP ETERNO//
     		i++;
-    		if (i >= 1){
+
+    		if (i >= 1 && R(i) - R(i - 1) <= 1){
     			L1 = Math.pow(2, Qc);
     			Qt = find_optimal_Q(R(i));
     			L2 = Math.pow(2, Qt);
@@ -103,7 +104,7 @@ public class ILCMSbS implements Estimator {
     }
     
     public double find_optimal_Q (double R){
-    	return log_2 ( 2.39 * Math.pow(2, Qc) );
+    	return log_2 ( Math.round(2.39 * Math.pow(2, Qc)) );
     }
 
 	@Override

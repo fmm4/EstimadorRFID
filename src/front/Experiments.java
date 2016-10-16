@@ -16,6 +16,30 @@ import back.*;
  * Classe utilizada para rodar os experimentos
  */
 public class Experiments {
+	//PARAMETROS DE EXECUCAO//
+	//Protocolos//
+	public static boolean schouteEnabled = true;
+	public static boolean lowerboundEnabled = true;
+	public static boolean ILCMEnabled = true;
+
+	
+	//Teste gerais//
+//	public int initial_number_of_tags = 100;
+//	public int incremental_tags = 100;
+//	public int maximum_tags = 1100;
+//	public int retries_per_n_of_tags = 2000;
+//	public int initial_frame_size = 120;
+//	public boolean use_pow2 = false;
+	
+	//Testes para ILCM//
+	public static int initial_number_of_tags = 0;
+	public static int incremental_tags = 20+30;
+	public static int maximum_tags = 300;
+	public static int retries_per_n_of_tags = 1;
+	public static int initial_frame_size = 100;
+	public static boolean use_pow2 = false;
+	
+	
     public int HASH = 1;
     public int TREE = 2;
 
@@ -43,7 +67,13 @@ public class Experiments {
 
     public static void main(String[] args) {
  
-    	simulate(100, 100, 1100, 2000,100+20,false);
+    	simulate(
+    			initial_number_of_tags,
+    			incremental_tags,
+    			maximum_tags,
+    			retries_per_n_of_tags,
+    			initial_frame_size,
+    			use_pow2);
 //        System.out.print(simulationInformation);
 
 
@@ -72,21 +102,23 @@ public class Experiments {
 	                lowerBound, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
 	        LBVec.add(simulationLB);
 	        
-//	        Map<Integer, graphInfo> simulationArti = new TreeMap<Integer, graphInfo>();
-//	        simulationArti = experiments.test_tags(
-//	                artig, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
-//	        artiVec.add(simulationArti);
+	        if(ILCMEnabled){
+	        Map<Integer, graphInfo> simulationArti = new TreeMap<Integer, graphInfo>();
+	        simulationArti = experiments.test_tags(
+	                artig, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
+	        artiVec.add(simulationArti);
+	        }
         }
         
         Map<Integer, graphInfo> simulationSchoute = averageValues(SchouteVec);
         Map<Integer, graphInfo> simulationLB = averageValues(LBVec);
-//        Map<Integer, graphInfo> simulationArti = averageValues(artiVec);
+        Map<Integer, graphInfo> simulationArti = averageValues(artiVec);
         
         Map<Estimator, Map<Integer, graphInfo>> graphMap = new HashMap();
         
-        graphMap.put(schoute, simulationSchoute);
-        graphMap.put(lowerBound, simulationLB);
-//        graphMap.put(artig, simulationArti);
+        if(schouteEnabled) graphMap.put(schoute, simulationSchoute);
+        if(lowerboundEnabled) graphMap.put(lowerBound, simulationLB);
+        if(ILCMEnabled) graphMap.put(artig, simulationArti);
 
         printer.printChart(graphMap);
     }
