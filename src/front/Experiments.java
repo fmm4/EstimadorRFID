@@ -43,7 +43,7 @@ public class Experiments {
 
     public static void main(String[] args) {
  
-    	simulate(100, 10, 500, 30,100+20,false);
+    	simulate(100, 100, 1100, 2000,100+20,false);
 //        System.out.print(simulationInformation);
 
 
@@ -60,7 +60,7 @@ public class Experiments {
         Vector SchouteVec = new Vector();
         Vector LBVec = new Vector();
         Vector artiVec = new Vector();
-        for(int i = 0; i<retry; i++)
+        for(int i = 0; i<=retry; i++)
         {
 	        Map<Integer, graphInfo> simulationSchoute = new TreeMap<Integer, graphInfo>();
 	        simulationSchoute = experiments.test_tags(
@@ -71,24 +71,23 @@ public class Experiments {
 	        simulationLB = experiments.test_tags(
 	                lowerBound, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
 	        LBVec.add(simulationLB);
-
-	        Map<Integer, graphInfo> simulationArti = new TreeMap<Integer, graphInfo>();
-	        simulationArti = experiments.test_tags(
-	                artig, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
-	        artiVec.add(simulationArti);
+	        
+//	        Map<Integer, graphInfo> simulationArti = new TreeMap<Integer, graphInfo>();
+//	        simulationArti = experiments.test_tags(
+//	                artig, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
+//	        artiVec.add(simulationArti);
         }
         
         Map<Integer, graphInfo> simulationSchoute = averageValues(SchouteVec);
         Map<Integer, graphInfo> simulationLB = averageValues(LBVec);
-        Map<Integer, graphInfo> simulationArti = averageValues(artiVec);
+//        Map<Integer, graphInfo> simulationArti = averageValues(artiVec);
         
         Map<Estimator, Map<Integer, graphInfo>> graphMap = new HashMap();
         
         graphMap.put(schoute, simulationSchoute);
         graphMap.put(lowerBound, simulationLB);
-        graphMap.put(artig, simulationArti);
-        
-        
+//        graphMap.put(artig, simulationArti);
+
         printer.printChart(graphMap);
     }
     

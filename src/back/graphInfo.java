@@ -7,7 +7,7 @@ public class graphInfo {
 	public double avg_slots;
 	public double avg_empty;
 	public double avg_colli;
-	public long time;
+	public double time;
 	
 	
 	graphInfo(){}
@@ -35,12 +35,11 @@ public class graphInfo {
 	
 	public graphInfo divide(double a){
 		graphInfo newGraphInfo = new graphInfo();
-		long k = (long) a;
 		newGraphInfo.nr_of_Reads =nr_of_Reads/a;
 		newGraphInfo.avg_slots =avg_slots/ a;
 		newGraphInfo.avg_empty =avg_empty/ a;
 		newGraphInfo.avg_colli = avg_colli/ a;
-		newGraphInfo.time =time/ k;
+		newGraphInfo.time =time/ a;
 		return newGraphInfo;
 	}
 

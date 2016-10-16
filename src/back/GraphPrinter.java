@@ -14,6 +14,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.chart.urls.CategoryURLGenerator;
 import org.jfree.chart.urls.StandardCategoryURLGenerator;
 import org.jfree.data.Range;
@@ -68,11 +69,11 @@ public class GraphPrinter {
 			addLinesToGraph(time_chart,entry.getKey().getName(),avgTime,steps);
 		}
 		
-		createGraphFromDataset(nr_of_reads_chart, "Signals Sent by Reader", "Tags", "Signals");
-		createGraphFromDataset(avg_slots_chart, "Average Slots on a Frame", "Tags", "Average Slots");
-		createGraphFromDataset(avg_empty_chart, "Average Empty Slots on a Frame", "Tags", "Average Empty Slots");
-		createGraphFromDataset(avg_colli_chart, "Average Collision Slots on a Frame", "Tags", "Average Collision Slots");
-		createGraphFromDataset(time_chart, "Average Time Required", "Tags", "Time");
+		createGraphFromDataset(nr_of_reads_chart, "Comandos", "Numero de Etiquetas", "Comandos");
+		createGraphFromDataset(avg_slots_chart, "Slots", "Numero de Etiquetas", "Numero de Slots");
+		createGraphFromDataset(avg_empty_chart, "Vazios", "Numero de Etiquetas", "Numero de Slots Vazios");
+		createGraphFromDataset(avg_colli_chart, "Colisao", "Numero de Etiquetas", "Numero de Slots em Colisao");
+		createGraphFromDataset(time_chart, "Tempo Necessario", "Numero de Etiquetas", "Tempo");
 	}
 	
 	static Vector extractSteps(Map<Integer,graphInfo> a)
@@ -151,10 +152,23 @@ public class GraphPrinter {
 	         graph,PlotOrientation.VERTICAL,
 	         true,true,false);
 		
-		lineChartObject.getPlot().setBackgroundPaint(Color.DARK_GRAY);
+		CategoryPlot plot = lineChartObject.getCategoryPlot();
+		
+		LineAndShapeRenderer renderer = new LineAndShapeRenderer();
+		plot.setRenderer(renderer);
+		
+		plot.setRangeGridlinesVisible(true);
+		plot.setRangeGridlinePaint(Color.BLACK);
+		 
+		plot.setDomainGridlinesVisible(true);
+		plot.setDomainGridlinePaint(Color.BLACK);
+		
+		renderer.setSeriesStroke(0, new BasicStroke(5.0f));
+		renderer.setSeriesStroke(1, new BasicStroke(5.0f));
+		renderer.setSeriesStroke(2, new BasicStroke(5.0f));
 
-	      int width = 1024; /* Width of the image */
-	      int height = 1080; /* Height of the image */ 
+	      int width = 200+300; /* Width of the image */
+	      int height = 400; /* Height of the image */ 
 	      File lineChart = new File( name+".jpeg" ); 
 	      try {
 	    	  

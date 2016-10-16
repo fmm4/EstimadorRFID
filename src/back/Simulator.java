@@ -32,6 +32,10 @@ public class Simulator {
 
 	// simula uma única leitura de um determinado número de tags.
 	public graphInfo simulate() {
+		sum_colli = 0;
+		sum_empty = 0;
+		sum_slots = 0;
+		
 		graphInfo graph_information = new graphInfo();
 
 		long startTime = System.nanoTime();
@@ -64,10 +68,10 @@ public class Simulator {
 		long endTime = System.nanoTime();
 		long duration = (endTime - startTime);
 
-		graph_information.time = duration;
-		graph_information.avg_colli = sum_colli/reader_signals;
-		graph_information.avg_slots = sum_slots/reader_signals;
-		graph_information.avg_empty = sum_empty/reader_signals;
+		graph_information.time = duration/1e6;
+		graph_information.avg_colli = sum_colli;
+		graph_information.avg_slots = sum_slots;
+		graph_information.avg_empty = sum_empty;
 		graph_information.nr_of_Reads = reader_signals;
 
 		return graph_information;
@@ -140,6 +144,7 @@ public class Simulator {
 				sum_colli++;
 				collision_slots++;
 			} else if(frame[i]==1) {
+				reader_signals++;
 				tags--;
 				successful_slots++;
 			} else if(frame[i]==0) {
