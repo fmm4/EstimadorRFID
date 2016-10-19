@@ -51,17 +51,20 @@ public class Simulator {
 
 			// Cada tag escolhe um slot no frame.
 			tag_slot_allocation();
-
+			
+		//	System.out.println(current_size);
 			// Contagem de slots com colisao, sucesso e vazios.
 			slot_counting();
 
 			// estima o tamanho do próximo frame
+			
 			current_size = estimator.estimate(collision_slots, empty_slots, successful_slots, current_size, frame);
 			
-			if(pow2frame)
+			if(pow2frame = true)
 			{
 				current_size = round_to_pow2(current_size);
 			}
+			
 //			instant_result();
 		}
 

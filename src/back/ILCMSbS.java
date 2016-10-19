@@ -29,20 +29,25 @@ public class ILCMSbS implements Estimator {
     	C = collision_slots;
     	Qn = -1;
     	Qc = current_size;
-
+    
+        	
+    	
     	while (Qn == -1 && i <= Math.pow(2, Qc)){
-//    		readSlot(frame);
+
     		c = collision_slots;
     		e = empty_slots;
     		s = successful_slots;
     		i++;
+    		
 
-    		if (i >= 1 && R(i) - R(i - 1) <= 1){
+    		if (i>1 && R(i) - R(i - 1) <= 1){
     			L1 = Math.pow(2, Qc);
     			Qt = find_optimal_Q(R(i));
     			L2 = Math.pow(2, Qt);
     			ps1 = Math.pow((R(i)/L1) * (1 - (1/L1)), R(i) - 1);
     			ps2 = Math.pow((R(i)/L2) * (1 - (1/L2)), R(i) - 1);
+    		
+    			
     			
     			if ((L1 * ps1 - s) < L2 * ps2){
     				Qn = Qt;

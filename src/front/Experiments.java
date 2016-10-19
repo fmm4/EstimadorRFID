@@ -24,20 +24,20 @@ public class Experiments {
 
 	
 	//Teste gerais//
-//	public int initial_number_of_tags = 100;
-//	public int incremental_tags = 100;
-//	public int maximum_tags = 1100;
-//	public int retries_per_n_of_tags = 2000;
-//	public int initial_frame_size = 120;
-//	public boolean use_pow2 = false;
+	public static int initial_number_of_tags = 100;
+	public static int incremental_tags = 100;
+	public static int maximum_tags = 700;
+	public static int retries_per_n_of_tags = 40;
+	public static int initial_frame_size = 120;
+	public static boolean use_pow2 = false;
 	
 	//Testes para ILCM//
-	public static int initial_number_of_tags = 0;
-	public static int incremental_tags = 20+30;
-	public static int maximum_tags = 300;
-	public static int retries_per_n_of_tags = 1;
-	public static int initial_frame_size = 100;
-	public static boolean use_pow2 = false;
+//	public static int initial_number_of_tags = 0;
+//	public static int incremental_tags = 20+30;
+//	public static int maximum_tags = 300;
+//	public static int retries_per_n_of_tags = 2000;
+//	public static int initial_frame_size = 100;
+//	public static boolean use_pow2 = true;
 	
 	
     public int HASH = 1;
@@ -108,6 +108,8 @@ public class Experiments {
 	                artig, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
 	        artiVec.add(simulationArti);
 	        }
+	        
+	        System.out.println(i+" Run.");
         }
         
         Map<Integer, graphInfo> simulationSchoute = averageValues(SchouteVec);
@@ -125,6 +127,7 @@ public class Experiments {
     
     static Map<Integer,graphInfo> averageValues(Vector<Map<Integer, graphInfo> > retried_graph)
     {
+    	if(retried_graph.isEmpty()){return null;}
     	Map<Integer,graphInfo> averaged = new TreeMap();
     	
     	long time;
