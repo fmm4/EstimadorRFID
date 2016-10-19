@@ -60,8 +60,7 @@ public class Simulator {
 			
 			current_size = estimator.estimate(collision_slots, empty_slots, successful_slots, current_size, frame);
 			
-			if(pow2frame == true)
-			{
+			if (pow2frame) {
 				current_size = round_to_pow2(current_size);
 			}
 			
