@@ -50,8 +50,8 @@ public class ILCMSbS implements Estimator {
     			L1 = Math.pow(2, Qc);
     			Qt = find_optimal_Q(R_i);
     			L2 = Math.pow(2, Qt);
-    			ps1 = Math.pow((R_i/L1) * (1 - (1/L1)), R_i - 1);
-    			ps2 = Math.pow((R_i/L2) * (1 - (1/L2)), R_i - 1);
+    			ps1 = (R_i/L1) * Math.pow((1 - (1/L1)), R_i - 1);
+    			ps2 = (R_i/L2) * Math.pow((1 - (1/L2)), R_i - 1);
 
     			if ((L1 * ps1 - s) < L2 * ps2){
     				Qn = Qt;
