@@ -24,11 +24,11 @@ public class Experiments {
 
 	
 	//Teste gerais//
-	public static int initial_number_of_tags = 100;
-	public static int incremental_tags = 100;
-	public static int maximum_tags = 700;
-	public static int retries_per_n_of_tags = 40;
-	public static int initial_frame_size = 120;
+	public static int initial_number_of_tags = 0;
+	public static int incremental_tags = 50;
+	public static int maximum_tags = 300;
+	public static int retries_per_n_of_tags = 2000;
+	public static int initial_frame_size = 100;
 	public static boolean use_pow2 = false;
 	
 	//Testes para ILCM//
@@ -57,7 +57,7 @@ public class Experiments {
 
         for(int tags = init_tags; tags < max_tags; tags+=increment)
         {
-            Simulator simulator = new Simulator(tags, frame_size, estimator, false);
+            Simulator simulator = new Simulator(tags, frame_size, estimator, frame_pow2);
             graphInfo tempGraph = simulator.simulate();
             simulationInformation.put(tags, tempGraph);
         }

@@ -20,6 +20,9 @@ public class ILCMSbS implements Estimator {
 	double L2;
 	double ps1;
 	double ps2;
+
+	double R_i_minus_one;
+	double R_i;
 	
 	//RETRIER//
 	int retrier = 0;
@@ -29,34 +32,37 @@ public class ILCMSbS implements Estimator {
     	C = collision_slots;
     	Qn = -1;
     	Qc = current_size;
-    
-        	
-    	
-    	while (Qn == -1 && i <= Math.pow(2, Qc)){
 
-    		c = collision_slots;
-    		e = empty_slots;
-    		s = successful_slots;
+		c = 0;
+		e = 0;
+		s = 0;
+
+    	while (Qn == -1 && i < current_size){
+			readSlot(frame);
     		i++;
-    		
 
-    		if (i>1 && R(i) - R(i - 1) <= 1){
+			R_i = R(i);
+			if (i == 1){
+				R_i_minus_one = R(i - 1);
+			}
+
+    		if (i > 1 && R_i - R_i_minus_one <= 1){
     			L1 = Math.pow(2, Qc);
-    			Qt = find_optimal_Q(R(i));
+    			Qt = find_optimal_Q(R_i);
     			L2 = Math.pow(2, Qt);
-    			ps1 = Math.pow((R(i)/L1) * (1 - (1/L1)), R(i) - 1);
-    			ps2 = Math.pow((R(i)/L2) * (1 - (1/L2)), R(i) - 1);
-    		
-    			
-    			
+    			ps1 = Math.pow((R_i/L1) * (1 - (1/L1)), R_i - 1);
+    			ps2 = Math.pow((R_i/L2) * (1 - (1/L2)), R_i - 1);
+
     			if ((L1 * ps1 - s) < L2 * ps2){
     				Qn = Qt;
     			}
     		}
+			R_i_minus_one = R_i;
+
     	}
     	
     	if (Qn != -1){
-    		 return (int) Math.round(Qn);
+			return (int) Math.round(Qn);
     	} else {
     		Qn = Qc;
     		return (int) Math.round(Qn);
@@ -91,25 +97,21 @@ public class ILCMSbS implements Estimator {
     }
     
     public void readSlot(int[] frame){
-//    	System.out.print(i + " - ");
-//    	System.out.print((int) Math.ceil(i) + " - ");
-//    	System.out.println(frame.length);
-//    	if(frame[(int) Math.round(i)] > 1) {
-//			c++;
-//		} else if(frame[(int) Math.round(i)] == 1) {
-//			s++;
-//		} else if(frame[(int) Math.round(i)] == 0) {
-//			e++;
-//		}
-    	
+    	if(frame[(int) Math.round(i)] > 1) {
+			c++;
+		} else if(frame[(int) Math.round(i)] == 1) {
+			s++;
+		} else if(frame[(int) Math.round(i)] == 0) {
+			e++;
+		}
     }
     
     public double log_2 (double a){
     	return (Math.log10(a) / Math.log10(2));
     }
     
-    public double find_optimal_Q (double R){
-    	return log_2 ( Math.round(2.39 * Math.pow(2, Qc)) );
+    public double find_optimal_Q (double R_i){
+    	return Math.round( log_2 (R_i) );
     }
 
 	@Override
