@@ -13,15 +13,16 @@ public class Simulator {
 	private boolean pow2frame;
 
 	private int[] frame;
-    private int current_size;
+    private double current_size;
 	private double collision_slots;
 	private double empty_slots;
 	private double successful_slots;
 
 	private double reader_signals = 0;
-	private double sum_empty = 0;
-	private double sum_colli = 0;
-	private double sum_slots = 0;
+	private double sum_empty;
+	private double sum_colli;
+    private double sum_slots;
+    private double sum_suces;
 
 	public Simulator(int tags, int frame_size, Estimator estimator, boolean pow2frame) {
 		this.tags = tags;
@@ -32,16 +33,20 @@ public class Simulator {
 
 	// simula uma única leitura de um determinado número de tags.
 	public graphInfo simulate() {
+
+        System.out.println("---------------------- inicio --------------------");
+
+        reader_signals = 0;
 		sum_colli = 0;
 		sum_empty = 0;
 		sum_slots = 0;
+        sum_suces = 0;
 		
 		graphInfo graph_information = new graphInfo();
 
 		long startTime = System.nanoTime();
 
 		current_size = frame_size;
-		sum_slots += current_size;
 		while(tags>0 && current_size>0)
 		{
 			reader_signals++;
@@ -51,20 +56,18 @@ public class Simulator {
 
 			// Cada tag escolhe um slot no frame.
 			tag_slot_allocation();
-			
-		//	System.out.println(current_size);
+
 			// Contagem de slots com colisao, sucesso e vazios.
 			slot_counting();
 
 			// estima o tamanho do próximo frame
-			
 			current_size = estimator.estimate(collision_slots, empty_slots, successful_slots, current_size, frame);
 			
 			if (pow2frame) {
 				current_size = round_to_pow2(current_size);
 			}
-			
-//			instant_result();
+
+            instant_result();
 		}
 
 		long endTime = System.nanoTime();
@@ -76,18 +79,26 @@ public class Simulator {
 		graph_information.avg_empty = sum_empty;
 		graph_information.nr_of_Reads = reader_signals;
 
+        System.out.println("------------resultado final:");
+        System.out.print(" sum_slots: " + sum_slots);
+        System.out.print(", sum_colli: " + sum_colli);
+        System.out.print(", sum_empty: " + sum_empty);
+        System.out.print(", sum_suces: " + sum_suces);
+        System.out.print("}\n");
+
+        System.out.println("---------------------- fim --------------------");
 		return graph_information;
 	}
 
 	// Método que seleciona um slot dentre os slots disponíveis.
-	private int get_slot(int max) {
+	private int get_slot(double max) {
 		Random rand = new Random();
-		return rand.nextInt(max);
+		return rand.nextInt((int) max);
 	}
 
 	// Inicializa o frame para uma nova leitura.
 	private void frame_init() {
-        frame = new int[current_size];
+        frame = new int[(int) current_size];
         Arrays.fill(frame,0);
     }
 
@@ -100,32 +111,32 @@ public class Simulator {
 	}
 	
 	//Escolhe o valor em potencia de 2 para ser o tamanho da frame
-	private int round_to_pow2(int value)
+	private int round_to_pow2(double value)
 	{
-		if(value >= 1 && value <= (2+3))
+		if(value >= 1 && value <= 5)
 		{
 			return 4;
-		}else if(value>=2*3 && value<=11)
+		}else if(value>=6 && value<=11)
 		{
 			return 8;
 		}else if(value >=12 && value <=22)
 		{
-			return 13+3;
+			return 16;
 		}else if(value >=23 && value <= 44)
 		{
 			return 32;
-		}else if(value >=42+3 && value <=89)
+		}else if(value >=45 && value <=89)
 		{
-			return 44+20;
+			return 64;
 		}else if(value >= 90 && value <= 177)
 		{
 			return 128;
-		}else if(value >= 178 && value <= 322+33)
+		}else if(value >= 178 && value <= 355)
 		{
-			return 244+12;
-		}else if(value >= 344+12 && value <= 710)
+			return 256;
+		}else if(value >= 356 && value <= 710)
 		{
-			return 412+100;
+			return 512;
 		}else if(value >= 711 && value <= 1420){
 			return 1024;
 		}else if(value >=1421){
@@ -140,12 +151,13 @@ public class Simulator {
 		collision_slots = 0;
 		empty_slots = 0;
 		successful_slots = 0;
-		for(int i = 0; i <current_size; i++)
+		for(int i = 0; i < current_size; i++)
 		{
 			if(frame[i]>1) {
 				sum_colli++;
 				collision_slots++;
 			} else if(frame[i]==1) {
+                sum_suces++;
 				reader_signals++;
 				tags--;
 				successful_slots++;
@@ -160,15 +172,18 @@ public class Simulator {
 	// Método utilizado para ver estado do simulador em um instante (debug).
 	private void instant_result() {
 		System.out.print("{size: " + current_size);
-		System.out.print(", length: " + frame.length);
+        System.out.print(", length: " + frame.length);
 		System.out.print(", frame: ");
 		for (int elem : frame) {
 			System.out.print(elem);
 		}
 		System.out.print(", tags: " + tags);
 		System.out.print(", collision_slots: " + collision_slots);
-		System.out.print(", empty_slots: " + empty_slots);
-		System.out.print(", successful_slots: " + successful_slots);
+//		System.out.print(", empty_slots: " + empty_slots);
+//        System.out.print(", successful_slots: " + successful_slots);
+//        System.out.print(", sum_slots: " + sum_slots);
+        System.out.print(", sum_colli: " + sum_colli);
+//        System.out.print(", sum_empty: " + sum_empty);
 		System.out.print("}\n");
 	}
 }

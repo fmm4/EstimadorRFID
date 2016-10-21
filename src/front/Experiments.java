@@ -20,14 +20,14 @@ public class Experiments {
 	//Protocolos//
 	public static boolean schouteEnabled = true;
 	public static boolean lowerboundEnabled = true;
-	public static boolean ILCMEnabled = true;
+	public static boolean ILCMEnabled = false;
 
 	
 	//Teste gerais//
 	public static int initial_number_of_tags = 0;
-	public static int incremental_tags = 50;
-	public static int maximum_tags = 300;
-	public static int retries_per_n_of_tags = 2000;
+	public static int incremental_tags = 100;
+	public static int maximum_tags = 1100;
+	public static int retries_per_n_of_tags = 30;
 	public static int initial_frame_size = 100;
 	public static boolean use_pow2 = false;
 	
@@ -103,10 +103,10 @@ public class Experiments {
 	        LBVec.add(simulationLB);
 	        
 	        if(ILCMEnabled){
-	        Map<Integer, graphInfo> simulationArti = new TreeMap<Integer, graphInfo>();
-	        simulationArti = experiments.test_tags(
-	                artig, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
-	        artiVec.add(simulationArti);
+				Map<Integer, graphInfo> simulationArti = new TreeMap<Integer, graphInfo>();
+				simulationArti = experiments.test_tags(
+						artig, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
+				artiVec.add(simulationArti);
 	        }
 	        
 	        System.out.println(i+" Run.");

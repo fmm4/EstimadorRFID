@@ -27,7 +27,7 @@ public class ILCMSbS implements Estimator {
 	//RETRIER//
 	int retrier = 0;
 
-    public int estimate (double collision_slots, double empty_slots, double successful_slots, double current_size, int[] frame){
+    public double estimate (double collision_slots, double empty_slots, double successful_slots, double current_size, int[] frame){
     	i = 0;
     	C = collision_slots;
     	Qn = -1;
