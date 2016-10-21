@@ -2,11 +2,14 @@ package front;
 
 import back.Estimator;
 import back.GraphPrinter;
+import back.eomlee;
 import back.graphInfo;
 
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.TreeMap;
 import java.util.Vector;
 
@@ -20,15 +23,17 @@ public class Experiments {
 	//Protocolos//
 	public static boolean schouteEnabled = true;
 	public static boolean lowerboundEnabled = true;
-	public static boolean ILCMEnabled = true;
+	public static boolean ILCMEnabled = false;
+	
+	public static Random ng = new SecureRandom();
 
 	
 	//Teste gerais//
-	public static int initial_number_of_tags = 0;
-	public static int incremental_tags = 50;
-	public static int maximum_tags = 300;
+	public static int initial_number_of_tags = 100;
+	public static int incremental_tags = 100;
+	public static int maximum_tags = 1000;
 	public static int retries_per_n_of_tags = 2000;
-	public static int initial_frame_size = 100;
+	public static int initial_frame_size = 30+34;
 	public static boolean use_pow2 = false;
 	
 	//Testes para ILCM//
@@ -45,7 +50,7 @@ public class Experiments {
 
     public int type = 2;
 
-    public Map<Integer, graphInfo> test_tags(Estimator estimator, int init_tags, int increment, int max_tags, int frame_size, boolean frame_pow2)
+    public Map<Integer, graphInfo> test_tags(Estimator estimator, int init_tags, int increment, int max_tags, int frame_size, boolean frame_pow2, Random ng)
     {
         Map<Integer,graphInfo> simulationInformation;
 
@@ -55,9 +60,9 @@ public class Experiments {
             simulationInformation = new TreeMap<Integer,graphInfo>();
         }
 
-        for(int tags = init_tags; tags < max_tags; tags+=increment)
+        for(int tags = init_tags; tags <= max_tags; tags+=increment)
         {
-            Simulator simulator = new Simulator(tags, frame_size, estimator, frame_pow2);
+            Simulator simulator = new Simulator(tags, frame_size, estimator, frame_pow2, ng);
             graphInfo tempGraph = simulator.simulate();
             simulationInformation.put(tags, tempGraph);
         }
@@ -85,29 +90,37 @@ public class Experiments {
         LowerBound lowerBound = new LowerBound();
         Schoute schoute = new Schoute();
         ILCMSbS artig = new ILCMSbS();
+        eomlee eomlee = new eomlee();
+        
         GraphPrinter printer = new GraphPrinter();
 
         Vector SchouteVec = new Vector();
         Vector LBVec = new Vector();
         Vector artiVec = new Vector();
+        Vector elVec = new Vector();
         for(int i = 0; i<=retry; i++)
         {
 	        Map<Integer, graphInfo> simulationSchoute = new TreeMap<Integer, graphInfo>();
 	        simulationSchoute = experiments.test_tags(
-	                schoute, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
+	                schoute, n_of_tags, increment_step, max_tags, frame_size, frame_pow2, ng);
 	        SchouteVec.add(simulationSchoute);
 	        
 	        Map<Integer, graphInfo> simulationLB = new TreeMap<Integer, graphInfo>();
 	        simulationLB = experiments.test_tags(
-	                lowerBound, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
+	                lowerBound, n_of_tags, increment_step, max_tags, frame_size, frame_pow2, ng);
 	        LBVec.add(simulationLB);
-	        
+
 	        if(ILCMEnabled){
 	        Map<Integer, graphInfo> simulationArti = new TreeMap<Integer, graphInfo>();
 	        simulationArti = experiments.test_tags(
-	                artig, n_of_tags, increment_step, max_tags, frame_size, frame_pow2);
+	                artig, n_of_tags, increment_step, max_tags, frame_size, frame_pow2, ng);
 	        artiVec.add(simulationArti);
 	        }
+	        
+	        Map<Integer, graphInfo> simulationEomlee = new TreeMap<Integer, graphInfo>();
+	        simulationEomlee = experiments.test_tags(
+	        		eomlee, n_of_tags, increment_step, max_tags, frame_size, frame_pow2, ng);
+	        elVec.add(simulationEomlee);
 	        
 	        System.out.println(i+" Run.");
         }
@@ -115,12 +128,14 @@ public class Experiments {
         Map<Integer, graphInfo> simulationSchoute = averageValues(SchouteVec);
         Map<Integer, graphInfo> simulationLB = averageValues(LBVec);
         Map<Integer, graphInfo> simulationArti = averageValues(artiVec);
+        Map<Integer, graphInfo> simulationEomlee = averageValues(elVec);
         
         Map<Estimator, Map<Integer, graphInfo>> graphMap = new HashMap();
         
         if(schouteEnabled) graphMap.put(schoute, simulationSchoute);
         if(lowerboundEnabled) graphMap.put(lowerBound, simulationLB);
         if(ILCMEnabled) graphMap.put(artig, simulationArti);
+        graphMap.put(eomlee, simulationEomlee);
 
         printer.printChart(graphMap);
     }

@@ -43,10 +43,10 @@ public class ILCMSbS implements Estimator {
 
 			R_i = R(i);
 			if (i == 1){
-				R_i_minus_one = R(i - 1);
+				R_i_minus_one = 0;
 			}
 
-    		if (i > 1 && R_i - R_i_minus_one <= 1){
+    		if (i >= 1 && R_i - R_i_minus_one <= 1){
     			L1 = Math.pow(2, Qc);
     			Qt = find_optimal_Q(R_i);
     			L2 = Math.pow(2, Qt);

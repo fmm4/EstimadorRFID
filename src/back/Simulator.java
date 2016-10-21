@@ -1,6 +1,7 @@
 package back;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Vector;
 
 /**
  * Classe do simulador que simula uma única leitura de um determinado número de tags.
@@ -22,26 +23,28 @@ public class Simulator {
 	private double sum_empty = 0;
 	private double sum_colli = 0;
 	private double sum_slots = 0;
+	
+	private Random ng;
 
-	public Simulator(int tags, int frame_size, Estimator estimator, boolean pow2frame) {
+	public Simulator(int tags, int frame_size, Estimator estimator, boolean pow2frame, Random ng) {
 		this.tags = tags;
 		this.frame_size = frame_size;
 		this.estimator = estimator;
 		this.pow2frame = pow2frame;
+		this.ng = ng;
 	}
 
 	// simula uma única leitura de um determinado número de tags.
 	public graphInfo simulate() {
-		sum_colli = 0;
-		sum_empty = 0;
-		sum_slots = 0;
 		
+		Vector<int[]> desperate = new Vector();
+	
 		graphInfo graph_information = new graphInfo();
 
 		long startTime = System.nanoTime();
+		
 
 		current_size = frame_size;
-		sum_slots += current_size;
 		while(tags>0 && current_size>0)
 		{
 			reader_signals++;
@@ -52,9 +55,13 @@ public class Simulator {
 			// Cada tag escolhe um slot no frame.
 			tag_slot_allocation();
 			
-		//	System.out.println(current_size);
+			desperate.add(frame);
+			
+			//	System.out.println(current_size);
 			// Contagem de slots com colisao, sucesso e vazios.
+			collision_slots = empty_slots = successful_slots = 0;
 			slot_counting();
+			sum_empty += empty_slots; sum_colli += collision_slots;
 
 			// estima o tamanho do próximo frame
 			
@@ -75,14 +82,16 @@ public class Simulator {
 		graph_information.avg_slots = sum_slots;
 		graph_information.avg_empty = sum_empty;
 		graph_information.nr_of_Reads = reader_signals;
+		
+		//desperateCounting(desperate);
 
 		return graph_information;
 	}
 
 	// Método que seleciona um slot dentre os slots disponíveis.
 	private int get_slot(int max) {
-		Random rand = new Random();
-		return rand.nextInt(max);
+
+		return ng.nextInt(frame.length);
 	}
 
 	// Inicializa o frame para uma nova leitura.
@@ -137,20 +146,14 @@ public class Simulator {
 
 	// Escolhe um slot para cada uma das tags existentes.
 	private void slot_counting() {
-		collision_slots = 0;
-		empty_slots = 0;
-		successful_slots = 0;
 		for(int i = 0; i <current_size; i++)
 		{
 			if(frame[i]>1) {
-				sum_colli++;
 				collision_slots++;
 			} else if(frame[i]==1) {
-				reader_signals++;
 				tags--;
 				successful_slots++;
 			} else if(frame[i]==0) {
-				sum_empty++;
 				empty_slots++;
 			}
 		}
@@ -171,4 +174,36 @@ public class Simulator {
 		System.out.print(", successful_slots: " + successful_slots);
 		System.out.print("}\n");
 	}
+	
+	private void desperateCounting(Vector<int[]> v)
+	{
+		double c = 0,s = 0,e = 0,sizek = 0;
+		for(int i = 0; i < v.size(); i++){
+			int[] a = v.elementAt(i);
+			for(int o = 0; o < a.length; o++)
+			{
+				double c1 = 0,s1 = 0, e1 = 0;
+				if(a[o]==0){
+					e1++;
+				}else if(a[o]==1)
+				{
+					s1++;
+				}else if(a[o]>1)
+				{
+					c1++;
+				}
+				System.out.println(o+". Collision:	"+c1+"	Empty:	"+e1+"	Success:	"+s1);
+				c += c1;
+				s += s1;
+				e += e1;
+				sizek += a.length;
+			}
+		}
+		sum_empty = e;
+		sum_colli = c;
+		
+		System.out.println("Size:	"+sizek+"Collision:	"+c+"	Empty:	"+e+"	Success:	"+s);
+	}
+	
+
 }
