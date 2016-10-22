@@ -25,7 +25,7 @@ public class Experiments {
 	public static boolean lowerboundEnabled = true;
 	public static boolean ILCMEnabled = false;
 	
-	public static Random ng;
+	public static Random ng = new Random();
 
 	
 	//Teste gerais//

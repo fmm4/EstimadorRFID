@@ -33,7 +33,7 @@ public class Simulator {
 		this.frame_size = frame_size;
 		this.estimator = estimator;
 		this.pow2frame = pow2frame;
-		//this.ng = ng;
+		this.ng = ng;
 	}
 
 	// simula uma única leitura de um determinado número de tags.
@@ -64,6 +64,7 @@ public class Simulator {
 			
 			desperate.add(frame);
 			
+			sum_slots+= current_size;
 			//	System.out.println(current_size);
 			// Contagem de slots com colisao, sucesso e vazios.
 			collision_slots = empty_slots = successful_slots = 0;
@@ -83,7 +84,7 @@ public class Simulator {
 		long endTime = System.nanoTime();
 		long duration = (endTime - startTime);
 		
-		desperateCounting(desperate);
+		//desperateCounting(desperate);
 
 		graph_information.time = duration/1e6;
 		graph_information.avg_colli = sum_colli;
@@ -158,6 +159,7 @@ public class Simulator {
 		{
 			if(frame[i]>1) {
 				collision_slots++;
+				sum_colli++;
 			}
 			if(frame[i]==1) {
 				tags--;
@@ -165,6 +167,7 @@ public class Simulator {
 			} 
 			if(frame[i]==0) {
 				empty_slots++;
+				sum_empty++;
 			}
 		}
 	}
