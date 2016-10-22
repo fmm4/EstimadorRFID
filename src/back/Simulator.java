@@ -1,7 +1,9 @@
 package back;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Vector;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Classe do simulador que simula uma única leitura de um determinado número de tags.
@@ -24,14 +26,14 @@ public class Simulator {
 	private double sum_colli = 0;
 	private double sum_slots = 0;
 	
-	private Random ng;
+	private Random ng = new SecureRandom();
 
 	public Simulator(int tags, int frame_size, Estimator estimator, boolean pow2frame, Random ng) {
 		this.tags = tags;
 		this.frame_size = frame_size;
 		this.estimator = estimator;
 		this.pow2frame = pow2frame;
-		this.ng = ng;
+		//this.ng = ng;
 	}
 
 	// simula uma única leitura de um determinado número de tags.
@@ -43,10 +45,15 @@ public class Simulator {
 
 		long startTime = System.nanoTime();
 		
-
 		current_size = frame_size;
+		
+		//Inicial para avisar a tags o tamanho da frame//
+		reader_signals++;
+
+		
 		while(tags>0 && current_size>0)
 		{
+			//Para avisar tags//
 			reader_signals++;
 
 			// Inicializa frame com quantidade de tags em cada slot igual a 0.
@@ -61,11 +68,10 @@ public class Simulator {
 			// Contagem de slots com colisao, sucesso e vazios.
 			collision_slots = empty_slots = successful_slots = 0;
 			slot_counting();
-			sum_empty += empty_slots; sum_colli += collision_slots;
 
 			// estima o tamanho do próximo frame
 			
-			current_size = estimator.estimate(collision_slots, empty_slots, successful_slots, current_size, frame);
+			current_size = (int) estimator.estimate(collision_slots, empty_slots, successful_slots, current_size, frame);
 			
 			if (pow2frame) {
 				current_size = round_to_pow2(current_size);
@@ -76,6 +82,8 @@ public class Simulator {
 
 		long endTime = System.nanoTime();
 		long duration = (endTime - startTime);
+		
+		desperateCounting(desperate);
 
 		graph_information.time = duration/1e6;
 		graph_information.avg_colli = sum_colli;
@@ -83,15 +91,14 @@ public class Simulator {
 		graph_information.avg_empty = sum_empty;
 		graph_information.nr_of_Reads = reader_signals;
 		
-		//desperateCounting(desperate);
+		
 
 		return graph_information;
 	}
 
 	// Método que seleciona um slot dentre os slots disponíveis.
 	private int get_slot(int max) {
-
-		return ng.nextInt(frame.length);
+		return ThreadLocalRandom.current().nextInt(0, max);
 	}
 
 	// Inicializa o frame para uma nova leitura.
@@ -103,7 +110,7 @@ public class Simulator {
 	// Escolhe um slot para cada uma das tags existentes.
 	private void tag_slot_allocation() {
 		for(int i = 0; i < tags; i++){
-			int slot = get_slot(current_size);
+			int slot = (int) Math.round(Math.random()*(current_size-1));
 			frame[slot]++;
 		}
 	}
@@ -146,18 +153,20 @@ public class Simulator {
 
 	// Escolhe um slot para cada uma das tags existentes.
 	private void slot_counting() {
+		collision_slots = 0; successful_slots = 0; empty_slots = 0;
 		for(int i = 0; i <current_size; i++)
 		{
 			if(frame[i]>1) {
 				collision_slots++;
-			} else if(frame[i]==1) {
+			}
+			if(frame[i]==1) {
 				tags--;
 				successful_slots++;
-			} else if(frame[i]==0) {
+			} 
+			if(frame[i]==0) {
 				empty_slots++;
 			}
 		}
-		sum_slots += current_size;
 	}
 
 	// Método utilizado para ver estado do simulador em um instante (debug).
@@ -180,29 +189,37 @@ public class Simulator {
 		double c = 0,s = 0,e = 0,sizek = 0;
 		for(int i = 0; i < v.size(); i++){
 			int[] a = v.elementAt(i);
+			//System.out.print("[");
 			for(int o = 0; o < a.length; o++)
 			{
 				double c1 = 0,s1 = 0, e1 = 0;
 				if(a[o]==0){
+					//System.out.print("E");
 					e1++;
 				}else if(a[o]==1)
 				{
+					//System.out.print("S");
 					s1++;
 				}else if(a[o]>1)
 				{
+
+					//System.out.print("C ("+(a[o])+")");
 					c1++;
 				}
-				System.out.println(o+". Collision:	"+c1+"	Empty:	"+e1+"	Success:	"+s1);
+				//System.out.print(", ");
+				//System.out.println(o+". Collision:	"+c1+"	Empty:	"+e1+"	Success:	"+s1);
 				c += c1;
 				s += s1;
 				e += e1;
-				sizek += a.length;
 			}
+			//System.out.println("]");
+			sizek += a.length;
 		}
 		sum_empty = e;
 		sum_colli = c;
+		sum_slots = sizek;
 		
-		System.out.println("Size:	"+sizek+"Collision:	"+c+"	Empty:	"+e+"	Success:	"+s);
+		//System.out.println("Slots:	"+sizek+" Collision:	"+c+"	Empty:	"+e+"	Success:	"+s);
 	}
 	
 

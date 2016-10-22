@@ -7,7 +7,7 @@ import java.lang.Math;
  */
 public class eomlee implements Estimator {
 
-    public int estimate (double collision_slots, double empty_slots, double successful_slots, double current_size, int[] frame){
+    public  double estimate (double collision_slots, double empty_slots, double successful_slots, double current_size, int[] frame){
     	double L = current_size;
     	double gamak;
     	double gamak_minus_1;
@@ -26,7 +26,7 @@ public class eomlee implements Estimator {
     	
     	
     	//System.out.println("Gamak: "+gamak);
-		return (int) (gamak*collision_slots);
+		return (gamak*collision_slots);
     }
     
     public String getName(){
